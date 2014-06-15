@@ -12,9 +12,9 @@ Usage
 -----
 From the root of your WordPress project (directory containing wp-load.php):
 ```python
-wp-admin.py createtheme [--timber] my-theme-name
+wp-admin.py starttheme [--timber] my-theme-name
 ```
-The ```createtheme``` command will create the following directory structure within
+The ```starttheme``` command will create the following directory structure within
 the wp-contents/themes/ directory:
 ```
 - my-theme-name
@@ -37,9 +37,9 @@ additionally be created within "my-theme-name":
 
 To create a plugin skeleton:
 ```python
-wp-admin.py createplugin my-plugin-name
+wp-admin.py startplugin my-plugin-name
 ```
-The ```createplugin``` command will create the following directory structure
+The ```startplugin``` command will create the following directory structure
 within the wp-contents/plugins/ directory:
 ```
 - my-plugin-name

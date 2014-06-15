@@ -36,10 +36,12 @@ class WPCommand(object):
         index.php, style.css, images/, css/ and js/. If with_timber is
         True then it additionally creates views/base.twig
         """
+        # Create Theme folder
         theme_root = os.path.join(os.getcwd(), 'wp-content', 'themes',
                                   args.name)
         os.makedirs(theme_root)
 
+        # Create files
         for f in ['index.php', 'README.md', 'style.css', 'functions.php',
                   '404.php']:
             fh = open(os.path.join(theme_root, f), 'w')
@@ -47,21 +49,24 @@ class WPCommand(object):
                 fh.write("<?php\n\n")
             fh.close()
 
-        static_dir = os.path.join(theme_root, 'static')
-        os.makedirs(static_dir)
+        if args.classic:
+            static_dir = theme_root
+        else:
+            # Create a static sub directory
+            static_dir = os.path.join(theme_root, 'static')
+            os.makedirs(static_dir)
 
-        for d in ['images', 'css', 'js']:
-            os.makedirs(os.path.join(static_dir, d))
-
-        # Create files for a Timber based theme
-        if args.timber:
+            # Change default twig directory from "views" to "templates"
             functionsphp = open(os.path.join(theme_root, 'functions.php'), 'a')
             functionsphp.write("Timber::$dirname = 'templates';\n")
             functionsphp.close()
-
             twig_templates = os.path.join(theme_root, 'templates')
             os.makedirs(os.path.join(twig_templates))
             open(os.path.join(twig_templates, 'base.twig'), 'a').close()
+
+        # Create sub directories
+        for d in ['images', 'css', 'js']:
+            os.makedirs(os.path.join(static_dir, d))
 
     @staticmethod
     @wp_root
@@ -87,7 +92,7 @@ if __name__ == "__main__":
     # Create the parser for the "starttheme" command
     parser_starttheme = subparsers.add_parser('starttheme')
     parser_starttheme.add_argument('name')
-    parser_starttheme.add_argument("-t", "--timber", help="create timber based theme \
+    parser_starttheme.add_argument("-c", "--classic", help="create classic theme \
                                     skeleton", action="store_true")
     parser_starttheme.set_defaults(func=WPCommand.starttheme)
 

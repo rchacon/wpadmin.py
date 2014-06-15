@@ -1,6 +1,5 @@
 wp-admin.py
 ===========
-
 wp-admin.py is a Python module for managing WordPress installations from the
 command line.
 

@@ -31,7 +31,7 @@ class WPCommand(object):
 
     @staticmethod
     @wp_root
-    def createtheme(args):
+    def starttheme(args):
         """Creates theme folder with the following empty files/folders:
         index.php, style.css, images/, css/ and js/. If with_timber is
         True then it additionally creates views/base.twig
@@ -65,7 +65,7 @@ class WPCommand(object):
 
     @staticmethod
     @wp_root
-    def createplugin(args):
+    def startplugin(args):
         """Creates plugin folder with a php file of the same name."""
         plugin_root = os.path.join(os.getcwd(), 'wp-content', 'plugins',
                                    args.name)
@@ -84,17 +84,17 @@ if __name__ == "__main__":
                                      theme/plugin skeleton")
     subparsers = parser.add_subparsers()
 
-    # Create the parser for the "createtheme" command
-    parser_createtheme = subparsers.add_parser('createtheme')
-    parser_createtheme.add_argument('name')
-    parser_createtheme.add_argument("-t", "--timber", help="create timber based theme \
+    # Create the parser for the "starttheme" command
+    parser_starttheme = subparsers.add_parser('starttheme')
+    parser_starttheme.add_argument('name')
+    parser_starttheme.add_argument("-t", "--timber", help="create timber based theme \
                                     skeleton", action="store_true")
-    parser_createtheme.set_defaults(func=WPCommand.createtheme)
+    parser_starttheme.set_defaults(func=WPCommand.starttheme)
 
-    # Create the parser for the "createplugin" command
-    parser_createplugin = subparsers.add_parser('createplugin')
-    parser_createplugin.add_argument('name')
-    parser_createplugin.set_defaults(func=WPCommand.createplugin)
+    # Create the parser for the "startplugin" command
+    parser_startplugin = subparsers.add_parser('startplugin')
+    parser_startplugin.add_argument('name')
+    parser_startplugin.set_defaults(func=WPCommand.startplugin)
 
     args = parser.parse_args()
     args.func(args)

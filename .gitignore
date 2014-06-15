@@ -1,0 +1,9 @@
+# build files
+build.bat
+build.upload.bat
+build/
+dist/
+wpadmin.egg-info/
+
+# test environment
+wp-content/

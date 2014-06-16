@@ -31,17 +31,17 @@ within the wp-contents/themes/ directory:
 ::
 
   - my-theme-name
-  - templates/
-    - base.twig
-  - static/
-    - css/
-    - images/
-    - js/
-  - 404.php
-  - functions.php
-  - index.php
-  - README.md
-  - style.css
+    - templates/
+      - base.twig
+    - static/
+      - css/
+      - images/
+      - js/
+    - 404.php
+    - functions.php
+    - index.php
+    - README.md
+    - style.css
 
 
 The above structure assumes you will be using the Twig template engine via

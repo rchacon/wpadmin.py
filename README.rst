@@ -2,10 +2,8 @@
 wpadmin
 ===========
 
-wpadmin is a Python module for managing WordPress installations from the
-command line. Inspiration comes from both django-admin.py and `WP-CLI`_.
-
-.. _WP-CLI: https://github.com/wp-cli/wp-cli
+A single Python module for managing WordPress installations from the
+command line. Inspiration comes from Django's ``startapp``.
 
 
 Installing
@@ -78,3 +76,10 @@ within the wp-contents/plugins/ directory:
   - my-plugin-name
     - my-plugin.name.php
     - README.md
+
+
+Running Tests
+-------------------
+::
+
+  $ python -m unittest tests

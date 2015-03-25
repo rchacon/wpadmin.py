@@ -3,7 +3,16 @@ build.bat
 build.upload.bat
 build/
 dist/
-wpadmin.egg-info/
+*.egg
+*.egg-info
 
 # test environment
 wp-content/
+
+# virtualenv
+Lib/
+Include/
+Scripts/
+
+*.pyc
+.coverage

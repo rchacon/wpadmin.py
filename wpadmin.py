@@ -26,8 +26,11 @@
 r"""
 For usage and a list of options, try this:
 $ python wpadmin.py -h
+
+This program lives here:
+https://github.com/raulchacon/wpadmin.py
 """
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
 import os
 from functools import wraps
@@ -44,9 +47,9 @@ class NotInWordPressRootError(Exception):
 def wp_root(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if (os.path.isdir(os.path.join(os.getcwd(), 'wp-content',
+        if (os.path.isdir(os.path.join(args[0].project_root, 'wp-content',
             'themes')) and
-            os.path.isdir(os.path.join(os.getcwd(), 'wp-content',
+            os.path.isdir(os.path.join(args[0].project_root, 'wp-content',
                           'plugins'))):
             return f(*args, **kwargs)
 
@@ -62,13 +65,21 @@ def starttheme(args):
     True then it additionally creates views/base.twig
     """
     # Create Theme folder
-    theme_root = os.path.join(os.getcwd(), 'wp-content', 'themes',
+    theme_root = os.path.join(args.project_root, 'wp-content', 'themes',
                               args.name)
     os.makedirs(theme_root)
 
     # Create files
-    for f in ['index.php', 'README.md', 'style.css', 'functions.php',
-              '404.php']:
+    theme_files = [
+        '404.php',
+        'functions.php',
+        'index.php',
+        'style.css',
+        'README.md',
+        '.gitignore'
+    ]
+
+    for f in theme_files:
         fh = open(os.path.join(theme_root, f), 'w')
         if '.php' in f:
             fh.write("<?php\n\n")
@@ -97,14 +108,20 @@ def starttheme(args):
 @wp_root
 def startplugin(args):
     """Creates plugin folder with a php file of the same name."""
-    plugin_root = os.path.join(os.getcwd(), 'wp-content', 'plugins',
-                               args.name)
+    plugin_root = os.path.join(
+        args.project_root,
+        'wp-content',
+        'plugins',
+        args.name
+    )
+
     os.makedirs(plugin_root)
 
     open(os.path.join(plugin_root, 'README.md'), 'a').close()
-    f = open(os.path.join(plugin_root, args.name + '.php'), 'w')
-    f.write("<?php\n\n")
-    f.close()
+    open(os.path.join(plugin_root, '.gitignore'), 'a').close()
+
+    with open(os.path.join(plugin_root, args.name + '.php'), 'w') as f:
+        f.write("<?php\n\n")
 
 
 def _main():
@@ -121,11 +138,13 @@ def _main():
     parser_starttheme.add_argument('name')
     parser_starttheme.add_argument("-c", "--classic", help="create classic theme \
                                     skeleton", action="store_true")
+    parser_starttheme.set_defaults(project_root=os.getcwd())
     parser_starttheme.set_defaults(func=starttheme)
 
     # Create the parser for the "startplugin" command
     parser_startplugin = subparsers.add_parser('startplugin')
     parser_startplugin.add_argument('name')
+    parser_startplugin.set_defaults(project_root=os.getcwd())
     parser_startplugin.set_defaults(func=startplugin)
 
     args = parser.parse_args()
